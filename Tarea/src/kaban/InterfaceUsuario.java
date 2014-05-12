@@ -19,9 +19,8 @@ public class InterfaceUsuario extends JFrame {
 	TextField titulo=new TextField(),descripcion=new TextField(),categoria=new TextField(),propietario=new TextField(),fechaEntrega=new TextField();
 	Integer[] prioridad={1,2,3,4,5,6,7,8,9,10};
 	JComboBox listaEstado=new JComboBox<State>(State.values()),listaPrioridad=new JComboBox<Integer>(prioridad);
-	JButton boton=new JButton("agregar");
+	JButton boton=new JButton("agregar"),botonCancelar=new JButton("cancelar");
 	ListaDeTareas listaTareas=new ListaDeTareas();
-	
 	private class escuchadorBoton implements ActionListener{
 
 		@Override
@@ -37,6 +36,18 @@ public class InterfaceUsuario extends JFrame {
 			String[] s=fechaEntrega.getText().split("/");
 			c.set(Integer.parseInt(s[2]),Integer.parseInt(s[1]),Integer.parseInt(s[0]));
 			t.setFechaDeEntrega(c.getTime());
+		}
+		
+	}
+	private class cerrarVentana3 implements ActionListener{
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			// TODO Auto-generated method stub
+			if(JOptionPane.showConfirmDialog(InterfaceUsuario.this, "Decea Cerrar la Ventana", "Cerrar", JOptionPane.YES_NO_OPTION)==JOptionPane.OK_OPTION){
+				dispose();
+				System.exit(1);
+			}
 		}
 		
 	}
@@ -99,6 +110,10 @@ public class InterfaceUsuario extends JFrame {
 				
 				add(boton,gc);
 				
+				gc.gridx=1;
+				gc.gridy=7;
+				add(botonCancelar,gc);
+				
 				Dimension d=new Dimension(150,25);
 				descripcion.setPreferredSize(new Dimension(150,80));
 				titulo.setPreferredSize(d);
@@ -106,6 +121,16 @@ public class InterfaceUsuario extends JFrame {
 				categoria.setPreferredSize(d);
 				fechaEntrega.setPreferredSize(d);
 				boton.addActionListener(new escuchadorBoton());
+				botonCancelar.addActionListener(new cerrarVentana3());
+//				botonCancelar.addActionListener(new ActionListener(){
+//
+//					@Override
+//					public void actionPerformed(ActionEvent arg0) {
+//						// TODO Auto-generated method stub
+//						dispose();
+//					}
+//					
+//				});
 		
 				
 		//segundo intento
