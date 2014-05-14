@@ -16,9 +16,10 @@ import java.util.GregorianCalendar;
 import javax.swing.*;
 
 public class InterfaceUsuario extends JFrame {
-	TextField titulo=new TextField(),descripcion=new TextField(),categoria=new TextField(),propietario=new TextField(),fechaEntrega=new TextField();
+	TextField titulo=new TextField(),descripcion=new TextField(),categoria=new TextField(),propietario=new TextField();
+			
 	Integer[] prioridad={1,2,3,4,5,6,7,8,9,10};
-	JComboBox listaEstado=new JComboBox<State>(State.values()),listaPrioridad=new JComboBox<Integer>(prioridad);
+	JComboBox listaEstado=new JComboBox<State>(State.values()),listaPrioridad=new JComboBox<Integer>(prioridad),dia=new JComboBox<Integer>(new Integer[]{1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31}),mes=new JComboBox<Integer>(new Integer[]{1,2,3,4,5,6,7,8,9,10,11,12}),ano=new JComboBox<Integer>(new Integer[]{2012,2013,2014});
 	JButton boton=new JButton("agregar"),botonCancelar=new JButton("cancelar");
 	ListaDeTareas listaTareas=new ListaDeTareas();
 	private class escuchadorBoton implements ActionListener{
@@ -26,16 +27,40 @@ public class InterfaceUsuario extends JFrame {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
-			JOptionPane.showMessageDialog(InterfaceUsuario.this, "escuchado");
-			Tarea t=new Tarea(titulo.getText(),(State)listaEstado.getSelectedItem(),(Integer)listaPrioridad.getSelectedItem());
-			t.setCategoria(categoria.getText());
-			t.setDescripcion(descripcion.getText());
-			t.setPropietario(propietario.getText());
+			String ss=titulo.getText();
+			if("".equalsIgnoreCase(ss.trim())){
+				JOptionPane.showMessageDialog(InterfaceUsuario.this, "titulo basio");
+				return;
+			}
+			
+			String sss=categoria.getText();
+			if("".equalsIgnoreCase(sss.trim())){
+				JOptionPane.showMessageDialog(InterfaceUsuario.this, "categoria basia");
+				return;
+			}
+			String ssss=descripcion.getText();
+			if("".equalsIgnoreCase(sss.trim())){
+				JOptionPane.showMessageDialog(InterfaceUsuario.this, "descripcion basia");
+				return;
+			}
+			String sp=propietario.getText();
+			if("".equalsIgnoreCase(sss.trim())){
+				JOptionPane.showMessageDialog(InterfaceUsuario.this, "propietario basio");
+				return;
+			}
+			
+			Tarea t=new Tarea(ss,(State)listaEstado.getSelectedItem(),(Integer)listaPrioridad.getSelectedItem());
+			t.setCategoria(sss);
+			t.setDescripcion(ssss);
+			t.setPropietario(sp);
 			t.setFechaDeCreacion(new Date());
 			Calendar c=new GregorianCalendar();
-			String[] s=fechaEntrega.getText().split("/");
-			c.set(Integer.parseInt(s[2]),Integer.parseInt(s[1]),Integer.parseInt(s[0]));
+			Integer[] s=new Integer[]{(Integer)dia.getSelectedItem(),(Integer)mes.getSelectedItem(),(Integer)ano.getSelectedItem()};
+			
+			c.set(s[2],s[1],s[0]);
 			t.setFechaDeEntrega(c.getTime());
+			
+			Programa.dashboard.add(t);
 		}
 		
 	}
@@ -103,25 +128,27 @@ public class InterfaceUsuario extends JFrame {
 				add(new JLabel("fecha de entrega"),gc);
 				gc.gridx=1;
 				gc.gridy=6;
-				add(fechaEntrega,gc);
-				
+				JPanel j=new JPanel(new FlowLayout());
+				j.add(dia);
+				j.add(mes);
+				j.add(ano);
+				j.add(new JLabel("dd-mm-aaaa"));
+				add(j,gc);
 				gc.gridx=0;
 				gc.gridy=7;
-				
 				add(boton,gc);
-				
 				gc.gridx=1;
 				gc.gridy=7;
 				add(botonCancelar,gc);
-				
 				Dimension d=new Dimension(150,25);
 				descripcion.setPreferredSize(new Dimension(150,80));
 				titulo.setPreferredSize(d);
 				propietario.setPreferredSize(d);
 				categoria.setPreferredSize(d);
-				fechaEntrega.setPreferredSize(d);
 				boton.addActionListener(new escuchadorBoton());
 				botonCancelar.addActionListener(new cerrarVentana3());
+				
+				
 //				botonCancelar.addActionListener(new ActionListener(){
 //
 //					@Override
@@ -131,8 +158,6 @@ public class InterfaceUsuario extends JFrame {
 //					}
 //					
 //				});
-		
-				
 		//segundo intento
 //				titulo.setPreferredSize(new Dimension(150,25));
 //				JPanel panelOeste =new JPanel(new GridLayout(7, 1)),panelCental=new JPanel(new GridLayout(7,1));
@@ -145,9 +170,6 @@ public class InterfaceUsuario extends JFrame {
 //				add(panelOeste,BorderLayout.WEST);
 //				add(panelCental,BorderLayout.CENTER);
 //				add(boton,BorderLayout.SOUTH);
-				
-		
-		
 		
 		//primer intento
 //				titulo.setPreferredSize(new Dimension(300, 25));
@@ -168,7 +190,7 @@ public class InterfaceUsuario extends JFrame {
 	public static void main(String[] args){
 		JFrame a=new InterfaceUsuario("Tarea");
 		a.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-		a.setSize(400, 300);
+		a.setSize(400, 400);
 		a.setVisible(true);
 	}
 }
